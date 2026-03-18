@@ -1,0 +1,19 @@
+<div class="app">
+  <div class="header">
+    <h1>Task Manager</h1>
+    <p class="stats"><!-- stats ici --></p>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+  </div>
+
+  <app-task-form />
+
+  <ul class="task-list">
+    @for (task of tasks(); track task.id) {
+      <app-task-item [task]="task" />
+    } @empty {
+      <p>Chargement des tâches en cours ...</p>
+    }
+  </ul>
+</div>
