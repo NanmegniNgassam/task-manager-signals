@@ -30,6 +30,27 @@ export class TaskService {
     this._$tasks.update((previousTasks) => previousTasks.filter((task) => task.id !== id));
   }
 
+  /**
+   * Set the task as done and reversely
+   */
+  toggleTaskCompletion(id: string): void {
+    const task = this._$tasks().find((task) => task.id === id);
+
+    if (!task) return;
+
+    this._$tasks.update((previousTasks) =>
+      previousTasks.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            isCompleted: !task.isCompleted,
+          };
+        }
+        return task;
+      }),
+    );
+  }
+
   private _generateRandomTaskId(): string {
     const alreadyUsedIds = this.$tasks().map((task) => task.id);
 
