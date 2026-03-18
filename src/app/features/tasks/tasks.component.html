@@ -10,15 +10,11 @@
   <app-task-form />
 
   <ul class="task-list">
-    @if (tasks()) {
-      @for (task of tasks(); track task.id) {
-        <app-task-item [task]="task" />
-      } @empty {
-        <p>Vous avez terminé toutes vos cartes.</p>
-        <p>Il est temps de remplir votre check-list!</p>
-      }
-    } @else {
-      <p>Chargement des tâches en cours ...</p>
+    @for (task of tasks(); track task.id) {
+      <app-task-item [task]="task" />
+    } @empty {
+      <p>Vous avez terminé toutes vos cartes.</p>
+      <p>Il est temps de remplir votre check-list!</p>
     }
   </ul>
 </div>

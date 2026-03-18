@@ -1,6 +1,5 @@
 import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Task } from '../../shared/models/task.model';
-import { v4 } from 'uuid';
 
 @Injectable()
 export class TaskService {
@@ -10,17 +9,15 @@ export class TaskService {
   /**
    * Adding a new task to the poll
    */
-  createTask(title: string): Task {
+  createTask(title: string) {
     const newTask: Task = {
       title,
-      id: this._generateRandomTaskId(),
+      id: globalThis.crypto.randomUUID(),
       createdAt: new Date(),
       isCompleted: false,
     };
 
     this._$tasks.update((previousTasks) => [...previousTasks, newTask]);
-
-    return newTask;
   }
 
   /**
@@ -34,31 +31,10 @@ export class TaskService {
    * Set the task as done and reversely
    */
   toggleTaskCompletion(id: string): void {
-    const task = this._$tasks().find((task) => task.id === id);
-
-    if (!task) return;
-
     this._$tasks.update((previousTasks) =>
-      previousTasks.map((task) => {
-        if (task.id === id) {
-          return {
-            ...task,
-            isCompleted: !task.isCompleted,
-          };
-        }
-        return task;
-      }),
+      previousTasks.map((task) =>
+        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,
+      ),
     );
-  }
-
-  private _generateRandomTaskId(): string {
-    const alreadyUsedIds = this.$tasks().map((task) => task.id);
-
-    let idCandidate = v4();
-    while (alreadyUsedIds.includes(idCandidate)) {
-      idCandidate = v4();
-    }
-
-    return idCandidate;
   }
 }
