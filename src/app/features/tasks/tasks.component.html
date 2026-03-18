@@ -1,16 +1,19 @@
 <div class="app">
   <div class="header">
     <h1>Task Manager</h1>
-    <p class="stats"><!-- stats ici --></p>
+    <div class="stats">
+      <p>Total de tâches : {{ taskService.tasksCount() }}</p>
+      <p>Total de tâches terminées : {{ taskService.completedTasksCount() }}</p>
+    </div>
     <div class="progress-bar">
-      <div class="progress-fill"></div>
+      <div class="progress-fill" [style.width.%]="taskService.completionPercentage()"></div>
     </div>
   </div>
 
   <app-task-form />
 
   <ul class="task-list">
-    @for (task of tasks(); track task.id) {
+    @for (task of taskService.$tasks(); track task.id) {
       <app-task-item [task]="task" />
     } @empty {
       <p>Vous avez terminé toutes vos cartes.</p>

@@ -1,10 +1,17 @@
-import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Task } from '../../shared/models/task.model';
 
 @Injectable()
 export class TaskService {
   private readonly _$tasks: WritableSignal<Task[]> = signal<Task[]>([]);
   readonly $tasks: Signal<Task[]> = this._$tasks.asReadonly();
+  readonly tasksCount = computed(() => this._$tasks().length);
+  readonly completedTasksCount = computed(
+    () => this._$tasks().filter((task) => task.isCompleted).length,
+  );
+  readonly completionPercentage = computed(() =>
+    this.tasksCount() === 0 ? 0 : (this.completedTasksCount() / this.tasksCount()) * 100,
+  );
 
   /**
    * Adding a new task to the poll
