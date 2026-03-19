@@ -4,3 +4,9 @@ export interface Task {
   isCompleted: boolean;
   createdAt: Date;
 }
+
+export enum CompletionStatus {
+  ALL = 'Toutes',
+  DONE = 'Completées',
+  IN_PROGRESS = 'Actives',
+}

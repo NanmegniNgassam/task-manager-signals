@@ -31,3 +31,47 @@
   border-radius: 99px;
   transition: width 0.3s ease;
 }
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+.filters input {
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.filters input:focus {
+  border-color: #1a1a1a;
+}
+.filters input::placeholder {
+  color: #bbb;
+}
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+}
+.filter-buttons button {
+  height: 36px;
+  padding: 0 16px;
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-buttons button:hover {
+  border-color: #1a1a1a;
+}
+.filter-buttons button.active {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+}

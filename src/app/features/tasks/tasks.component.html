@@ -12,12 +12,29 @@
 
   <app-task-form />
 
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Rechercher une tâche..."
+      (keyup)="taskService._$searchFilter.set($event.target.value.trim())"
+    />
+    <div class="filter-buttons">
+      @for (item of completionStatus; track $index) {
+        <button
+          (click)="changeStatusFilter(item)"
+          [class.active]="taskService._$completionFilter() === item"
+        >
+          {{ item }}
+        </button>
+      }
+    </div>
+  </div>
+
   <ul class="task-list">
-    @for (task of taskService.$tasks(); track task.id) {
+    @for (task of taskService._$filteredTasks(); track task.id) {
       <app-task-item [task]="task" />
     } @empty {
-      <p>Vous avez terminé toutes vos cartes.</p>
-      <p>Il est temps de remplir votre check-list!</p>
+      <p>Aucune tâche trouvée.</p>
     }
   </ul>
 </div>

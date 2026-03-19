@@ -1,10 +1,36 @@
 import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { Task } from '../../shared/models/task.model';
+import { CompletionStatus, Task } from '../../shared/models/task.model';
 
 @Injectable()
 export class TaskService {
   private readonly _$tasks: WritableSignal<Task[]> = signal<Task[]>([]);
   readonly $tasks: Signal<Task[]> = this._$tasks.asReadonly();
+  readonly _$filteredTasks = computed(() => {
+    const tasks = this._$tasks();
+    const searchEntry = this._$searchFilter();
+
+    switch (this._$completionFilter()) {
+      case CompletionStatus.IN_PROGRESS:
+        return tasks.filter(
+          (task) =>
+            task.title.toLocaleLowerCase().includes(searchEntry.toLocaleLowerCase()) &&
+            !task.isCompleted,
+        );
+        break;
+      case CompletionStatus.DONE:
+        return tasks.filter(
+          (task) =>
+            task.title.toLocaleLowerCase().includes(searchEntry.toLocaleLowerCase()) &&
+            task.isCompleted,
+        );
+      default:
+        return tasks.filter((task) =>
+          task.title.toLocaleLowerCase().includes(searchEntry.toLocaleLowerCase()),
+        );
+    }
+  });
+  readonly _$searchFilter = signal<string>('');
+  readonly _$completionFilter = signal<CompletionStatus>(CompletionStatus.ALL);
   readonly tasksCount = computed(() => this._$tasks().length);
   readonly completedTasksCount = computed(
     () => this._$tasks().filter((task) => task.isCompleted).length,
